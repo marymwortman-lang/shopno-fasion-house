@@ -6,11 +6,12 @@
   <title>Shopno Fashion House</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Open Graph Meta Tags for Facebook Preview (Generic for this static page) -->
-  <meta property="og:title" content="Shopno Fashion House - Unique & Stylish Collections" />
-  <meta property="og:description" content="Discover our latest and exclusive fashion collections. Where Style Meets Comfort & Elegance." />
-  <meta property="og:image" content="https://i.imgur.com/b6FhFQS.jpg" /> <!-- Use your main banner or logo image here -->
-  <meta property="og:url" content="https://yourwebsite.com/" /> <!-- Replace with your actual website URL -->
+  <!-- Open Graph Meta Tags for Facebook Preview -->
+  <!-- IMPORTANT: These are generic. For per-product previews, a server-side solution is needed. -->
+  <meta property="og:title" id="og-title" content="Shopno Fashion House - Unique & Stylish Collections" />
+  <meta property="og:description" id="og-description" content="Discover our latest and exclusive fashion collections. Where Style Meets Comfort & Elegance." />
+  <meta property="og:image" id="og-image" content="https://i.imgur.com/b6FhFQS.jpg" /> <!-- Default main banner or logo image -->
+  <meta property="og:url" id="og-url" content="https://yourwebsite.com/" /> <!-- Replace with your actual website URL -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Shopno Fashion House" />
 
@@ -283,6 +284,7 @@
       transition: opacity 0.3s ease-in-out;
       pointer-events: none; /* Allow clicks to pass through */
       white-space: nowrap;
+      z-index: 10;
     }
     .copy-feedback.show {
       opacity: 1;
@@ -670,29 +672,13 @@
                 <span class="price-text">Price: </span><span class="price">${price} Tk</span>
               </div>
               <div class="product-actions">
-                <button class="btn copy-link-btn" data-product-id="${idx}" onclick="copyProductLink(this)">Copy Link</button>
+                <button class="btn copy-link-btn" data-product-id="${idx}" data-product-src="${src}" data-product-price="${price}" onclick="copyProductLink(this)">Copy Link</button>
                 <button class="btn order-btn" data-src="${src}" data-price="${price}" onclick="openOrderModal(this)">Order Now</button>
               </div>
             </div>
             <div id="copy-feedback-${idx}" class="copy-feedback">Link Copied!</div>
           `;
           grid.appendChild(card);
-        });
-
-        // Function to scroll to product if URL hash exists
-        window.addEventListener('DOMContentLoaded', () => {
-            const productId = window.location.hash.substring(1); // Remove '#'
-            if (productId.startsWith('product-')) {
-                const productElement = document.getElementById(productId);
-                if (productElement) {
-                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Optional: Highlight the product briefly
-                    productElement.style.boxShadow = `0 0 0 4px ${getComputedStyle(document.documentElement).getPropertyValue('--accent-main')}`;
-                    setTimeout(() => {
-                        productElement.style.boxShadow = ''; // Remove highlight
-                    }, 2000);
-                }
-            }
         });
       </script>
 
@@ -738,10 +724,73 @@
     const ADLINK = 'https://encasehighlight.com/vsnrrkqbrb?key=875a394a0867b7d59e2cb13e1f009402';
     const siteBaseUrl = window.location.origin + window.location.pathname; // Gets "http://localhost:8000/" or "https://yourwebsite.com/"
 
+    // Helper to get a clean product name from URL
+    function getProductNameFromSrc(src) {
+        return src.split('/').pop().replace(/\.jpg$/, '').replace(/[^a-zA-Z0-9]/g, ' ').trim() || 'Selected Product';
+    }
+
+    // Function to update Open Graph meta tags (client-side only, for browser, not crawlers)
+    function updateOgTags(title, description, image, url) {
+        document.getElementById('og-title').setAttribute('content', title);
+        document.getElementById('og-description').setAttribute('content', description);
+        document.getElementById('og-image').setAttribute('content', image);
+        document.getElementById('og-url').setAttribute('content', url);
+        document.title = title; // Also update the browser tab title
+    }
+
+    // Store original OG meta tags
+    let originalOgTitle, originalOgDescription, originalOgImage, originalOgUrl, originalPageTitle;
+
+    window.addEventListener('DOMContentLoaded', () => {
+        // Store original values
+        originalOgTitle = document.getElementById('og-title').getAttribute('content');
+        originalOgDescription = document.getElementById('og-description').getAttribute('content');
+        originalOgImage = document.getElementById('og-image').getAttribute('content');
+        originalOgUrl = document.getElementById('og-url').getAttribute('content');
+        originalPageTitle = document.title;
+
+        handleHashChange(); // Check hash on initial load
+    });
+
+    // Listen for hash changes to navigate to products
+    window.addEventListener('hashchange', handleHashChange);
+
+    function handleHashChange() {
+        const productId = window.location.hash.substring(1); // Remove '#'
+        if (productId.startsWith('product-')) {
+            const productElement = document.getElementById(productId);
+            if (productElement) {
+                // Scroll to product
+                productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Optional: Highlight the product briefly
+                productElement.style.boxShadow = `0 0 0 4px ${getComputedStyle(document.documentElement).getPropertyValue('--accent-main')}`;
+                setTimeout(() => {
+                    productElement.style.boxShadow = ''; // Remove highlight
+                }, 2000);
+
+                // Attempt to update Open Graph tags (for browser/user experience, not Facebook crawler)
+                const productSrc = productElement.querySelector('.thumb img').src;
+                const productPrice = productElement.querySelector('.price').innerText;
+                const productName = getProductNameFromSrc(productSrc);
+                updateOgTags(
+                    `Shopno Fashion House - ${productName} (${productPrice})`,
+                    `Check out this stylish product: ${productName} for only ${productPrice}!`,
+                    productSrc,
+                    `${siteBaseUrl}#${productId}`
+                );
+            }
+        } else {
+            // If no product hash, reset to original OG tags
+            updateOgTags(originalOgTitle, originalOgDescription, originalOgImage, originalOgUrl);
+            document.title = originalPageTitle;
+        }
+    }
+
+
     function openOrderModal(button){
       const src = button.dataset.src;
       const price = button.dataset.price;
-      const productName = src.split('/').pop().replace(/\.jpg$/, '').replace(/[^a-zA-Z0-9]/g, ' ').trim() || 'Selected Product';
+      const productName = getProductNameFromSrc(src);
       document.getElementById('prodName').innerText = productName;
       document.getElementById('prodPrice').innerText = price;
       document.getElementById('modal').style.display = 'flex';
@@ -808,9 +857,12 @@
       console.log('Order Data:', orderData);
     }
 
-    // New function to copy product link
+    // Function to copy product link
     function copyProductLink(button) {
         const productId = button.dataset.productId;
+        const productSrc = button.dataset.productSrc;
+        const productPrice = button.dataset.productPrice; // Assuming price is also dataset or can be found
+
         const productLink = `${siteBaseUrl}#product-${productId}`;
 
         navigator.clipboard.writeText(productLink).then(() => {
@@ -819,6 +871,18 @@
             setTimeout(() => {
                 feedbackElement.classList.remove('show');
             }, 1500);
+
+            // Here's the client-side attempt to update OG tags for social sharing,
+            // but remember it won't work for social media crawlers.
+            // It just updates the browser's view.
+            const productName = getProductNameFromSrc(productSrc);
+            updateOgTags(
+                `Shopno Fashion House - ${productName} (${productPrice})`,
+                `Check out this stylish product: ${productName} for only ${productPrice}!`,
+                productSrc,
+                productLink
+            );
+
         }).catch(err => {
             console.error('Failed to copy text: ', err);
             alert('Could not copy link. Please copy it manually: ' + productLink);
