@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shopno Fashion House</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0A0D15;
+      --bg-light: #151B27;
+      --card-bg: #1A212E;
+      --accent-main: #E94560;
+      --accent-gradient: linear-gradient(90deg, #E94560, #FF7B90);
+      --text-primary: #E0E7EB;
+      --text-secondary: #9CA3AF;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --shadow-light: rgba(0, 0, 0, 0.4);
+      --shadow-dark: rgba(0, 0, 0, 0.7);
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-light) 60%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    /* Header / Banner */
+    .header {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .brand {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .brand img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--accent-main);
+      box-shadow: 0 8px 25px var(--shadow-dark);
+      transition: transform 0.3s ease;
+    }
+    .brand img:hover {
+      transform: scale(1.05);
+    }
+    .brand h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.8px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .tagline {
+      color: var(--text-secondary);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    .contact-info {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .contact-info strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Big banner area */
+    .main-banner {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 50px var(--shadow-dark);
+      margin-bottom: 30px;
+      min-height: 380px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .main-banner img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7) contrast(1.05);
+      z-index: 1;
+    }
+    .banner-overlay {
+      position: relative;
+      z-index: 2;
+      padding: 30px;
+      color: white;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+      width: 100%;
+    }
+    .banner-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .banner-cta {
+      display: inline-block;
+      background: var(--accent-gradient);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+    }
+    .banner-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(233, 69, 96, 0.4);
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 28px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .section-info {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* Products grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px var(--shadow-light);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px var(--shadow-dark);
+    }
+    .thumb {
+      width: 100%;
+      height: 250px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-light), var(--bg-dark));
+      margin-bottom: 15px;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .card:hover .thumb img {
+      transform: scale(1.08);
+    }
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .price-text {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .price {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--accent-main);
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .order-btn {
+      background: var(--accent-gradient);
+      border: none;
+      color: white;
+      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.2);
+    }
+    .order-btn:hover {
+      opacity: 0.9;
+      box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding: 24px 0;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+    footer div {
+      margin-bottom: 8px;
+    }
+    footer a {
+      color: var(--accent-main);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    footer a:hover {
+      color: #FF7B90;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+      backdrop-filter: blur(5px);
+    }
+    .modal {
+      background: linear-gradient(180deg, var(--card-bg), var(--bg-dark));
+      padding: 25px;
+      border-radius: 16px;
+      max-width: 550px;
+      width: 100%;
+      box-shadow: 0 30px 100px var(--shadow-dark);
+      animation: fadeIn 0.3s ease-out;
+      border: 1px solid var(--border-color);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .modal-product-info {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+    .modal-product-info strong {
+      color: var(--text-primary);
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.05);
+      color: inherit;
+      font-size: 15px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .field input:focus, .field select:focus {
+      border-color: var(--accent-main);
+      background: rgba(233, 69, 96, 0.1);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+    }
+    .modal-info-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .secondary-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .secondary-btn:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text-primary);
+    }
+    .modal .order-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    /* success message */
+    .success {
+      background: linear-gradient(90deg, #10B981, #34D399); /* Emerald Green */
+      color: #042022;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .success-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #054F38;
+    }
+    .success-message {
+      font-size: 14px;
+      color: #054F38;
+      line-height: 1.5;
+    }
+    .success button {
+      margin-top: 18px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      font-weight: 700;
+      cursor: pointer;
+      background-color: #042022;
+      color: white;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+    }
+    .success button:hover {
+      background-color: #0B3A3D;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 768px) {
+      .wrap {
+        margin: 20px auto;
+        padding: 0 16px;
+      }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding-bottom: 12px;
+      }
+      .brand h1 {
+        font-size: 22px;
+      }
+      .contact-info {
+        font-size: 13px;
+      }
+      .main-banner {
+        min-height: 300px;
+      }
+      .banner-overlay {
+        padding: 20px;
+      }
+      .banner-title {
+        font-size: 28px;
+      }
+      .banner-cta {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 20px 0 15px;
+      }
+      .section-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      .section-info {
+        font-size: 13px;
+      }
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+      }
+      .thumb {
+        height: 200px;
+      }
+      .price {
+        font-size: 18px;
+      }
+      .btn {
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="brand">
+        <img src="https://i.imgur.com/b6FhFQS.jpg" alt="Shopno Fashion House Logo">
+        <div>
+          <h1>Shopno Fashion House</h1>
+          <div class="tagline">Where Style Meets Comfort & Elegance.</div>
+        </div>
+      </div>
+      <div class="contact-info">Call / Order: <strong>+880 1XXXXXXXXX</strong></div>
+    </header>
+
+    <!-- Main banner -->
+    <section class="main-banner">
+      <img src="https://i.imgur.com/b6FhFQS.jpg" alt="Exclusive Collection Banner">
+      <div class="banner-overlay">
+        <div class="banner-title">Discover Our Latest & Exclusive Collections</div>
+        <a href="#products" class="banner-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Styles</a>
+      </div>
+    </section>
+
+    <!-- Ads (top) -->
+    <div style="margin-bottom:20px;display:flex;justify-content:center;">
+      <script type="text/javascript">
+		atOptions = {
+			'key' : 'e467ca2243fbebd87ac525cfbfa24ee5',
+			'format' : 'iframe',
+			'height' : 60,
+			'width' : 468,
+			'params' : {}
+		};
+      </script>
+      <script type="text/javascript" src="//encasehighlight.com/e467ca2243fbebd87ac525cfbfa24ee5/invoke.js"></script>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Our Products</h2>
+      <div class="section-info">Click <strong>Order Now</strong> for a seamless shopping experience</div>
+    </div>
+
+    <!-- Products grid -->
+    <section id="products" class="grid">
+
+      <script>
+        const items = [
+          ["https://i.imgur.com/ceqKn65.jpg","350"],
+          ["https://i.imgur.com/ueulWDP.jpg","350"],
+          ["https://i.imgur.com/p0bi0HF.jpg","350"],
+          ["https://i.imgur.com/REPre7n.jpg","350"],
+          ["https://i.imgur.com/udIuhs5.jpg","350"],
+          ["https://i.imgur.com/godSTMR.jpg","350"],
+          ["https://i.imgur.com/inyoJeL.jpg","350"],
+          ["https://i.imgur.com/yRLzqtc.jpg","400"],
+          ["https://i.imgur.com/HccLZTv.jpg","400"],
+          ["https://i.imgur.com/VDTLezr.jpg","400"],
+          ["https://i.imgur.com/W3OImCB.jpg","400"],
+          ["https://i.imgur.com/Mdoq1Dk.jpg","400"],
+          ["https://i.imgur.com/M5s5b8C.jpg","350"],
+          ["https://i.imgur.com/rT8TBJ3.jpg","380"],
+          ["https://i.imgur.com/iEhumSq.jpg","420"],
+          ["https://i.imgur.com/LuFoYzV.jpg","370"],
+          ["https://i.imgur.com/zjUdQer.jpg","370"],
+          ["https://i.imgur.com/0YVzKAF.jpg","420"],
+          ["https://i.imgur.com/4iDhnAO.jpg","420"],
+          ["https://i.imgur.com/STN8oNA.jpg","420"],
+          ["https://i.imgur.com/Tic2btq.jpg","420"],
+          ["https://i.imgur.com/6w9nQAD.jpg","420"],
+          ["https://i.imgur.com/QS4RqRg.jpg","450"],
+          ["https://i.imgur.com/ObxU1km.jpg","300"],
+          ["https://i.imgur.com/rkIjCNa.jpg","300"],
+          ["https://i.imgur.com/ZK7lWlq.jpg","400"],
+          ["https://i.imgur.com/G8iQkE5.jpg","300"],
+          ["https://i.imgur.com/90T5Kam.jpg","400"],
+          ["https://i.imgur.com/6QsdnWU.jpg","350"],
+          ["https://i.imgur.com/1PP5I5u.jpg","450"],
+          ["https://i.imgur.com/3tkP2SK.jpg","800"],
+          ["https://i.imgur.com/ZvqnH1b.jpg","800"],
+          ["https://i.imgur.com/wDCTbB1.jpg","500"],
+          ["https://i.imgur.com/Uq0Xw7z.jpg","400"],
+          ["https://i.imgur.com/XuyWj3Z.jpg","500"],
+          ["https://i.imgur.com/fnX02At.jpg","600"],
+          ["https://i.imgur.com/nDHOMJ3.jpg","400"],
+          ["https://i.imgur.com/NcjKD0Z.jpg","500"],
+          ["https://i.imgur.com/AM4GDEj.jpg","1000"],
+          ["https://i.imgur.com/IVexlqv.jpg","1000"],
+          ["https://i.imgur.com/nH3v7KT.jpg","1000"],
+          ["https://i.imgur.com/GNkDH0O.jpg","200"],
+          ["https://i.imgur.com/KjVd2hF.jpg","200"],
+          ["https://i.imgur.com/u6Y0hTl.jpg","200"],
+          ["https://i.imgur.com/ly4bIqQ.jpg","200"],
+          ["https://i.imgur.com/DhsQNDk.jpg","200"],
+          ["https://i.imgur.com/KAOozPx.jpg","200"],
+          ["https://i.imgur.com/IefKblJ.jpg","200"],
+          ["https://i.imgur.com/iPP525D.jpg","200"],
+          ["https://i.imgur.com/OGjv7tQ.jpg","150"],
+          ["https://i.imgur.com/M6sv32q.jpg","100"],
+          ["https://i.imgur.com/LvgRef0.jpg","150"],
+          ["https://i.imgur.com/yZm2JA9.jpg","100"],
+          ["https://i.imgur.com/fYmwr80.jpg","200"],
+          ["https://i.imgur.com/WwG0Lfm.jpg","250"],
+          ["https://i.imgur.com/FnxfBXZ.jpg","200"],
+          ["https://i.imgur.com/X6TTny8.jpg","200"],
+          ["https://i.imgur.com/blZCRYD.jpg","200"],
+          ["https://i.imgur.com/kETCAUv.jpg","300"],
+          ["https://i.imgur.com/TLcv7oq.jpg","300"],
+          ["https://i.imgur.com/33it2N5.jpg","300"],
+          ["https://i.imgur.com/VDpYrMS.jpg","300"],
+          ["https://i.imgur.com/rjj1qN8.jpg","300"],
+          ["https://i.imgur.com/UxkhelR.jpg","300"],
+          ["https://i.imgur.com/0ytcabo.jpg","300"],
+          ["https://i.imgur.com/Aj1TiEu.jpg","300"],
+          ["https://i.imgur.com/btoxMX0.jpg","300"],
+          ["https://i.imgur.com/0jM3raf.jpg","350"],
+          ["https://i.imgur.com/h2rzucv.jpg","300"],
+          ["https://i.imgur.com/JJQkQ9J.jpg","300"],
+          ["https://i.imgur.com/jzrfwzi.jpg","300"],
+          ["https://i.imgur.com/PAFnwQi.jpg","300"],
+          ["https://i.imgur.com/Fh8ABVy.jpg","300"],
+          ["https://i.imgur.com/Zl2h1da.jpg","250"],
+          ["https://i.imgur.com/FFmU3eE.jpg","400"],
+          ["https://i.imgur.com/gGDSglN.jpg","400"],
+          ["https://i.imgur.com/3uS9rVR.jpg","300"],
+          ["https://i.imgur.com/ycmo2xG.jpg","300"],
+          ["https://i.imgur.com/UJtjO1m.jpg","400"],
+          ["https://i.imgur.com/bGf4VJ4.jpg","400"],
+          ["https://i.imgur.com/QE31fPq.jpg","400"],
+          ["https://i.imgur.com/Nm3XGzk.jpg","400"],
+          ["https://i.imgur.com/d599vcY.jpg","400"],
+          ["https://i.imgur.com/gfbqxjt.jpg","400"],
+          ["https://i.imgur.com/GmxxNt5.jpg","400"],
+          ["https://i.imgur.com/WzuDFJP.jpg","400"],
+          ["https://i.imgur.com/6sRKKOs.jpg","400"],
+          ["https://i.imgur.com/1vf4lqL.jpg","400"],
+          ["https://i.imgur.com/gbeD04j.jpg","400"],
+          ["https://i.imgur.com/bgZHSQG.jpg","400"],
+          ["https://i.imgur.com/OnwXUcD.jpg","300"],
+          ["https://i.imgur.com/diAIm10.jpg","300"],
+          ["https://i.imgur.com/Uicchin.jpg","250"],
+          ["https://i.imgur.com/ygyZtnf.jpg","250"]
+        ];
+
+        const grid = document.currentScript.parentNode;
+        items.forEach((it, idx)=>{
+          const [src,price] = it;
+          const card = document.createElement('div'); card.className='card';
+          card.innerHTML = `
+            <div class="thumb">
+              <img loading="lazy" src="${src}" alt="product-${idx+1}">
+            </div>
+            <div class="product-details">
+              <div><span class="price-text">Price: </span><span class="price">${price} Tk</span></div>
+              <div>
+                <button class="btn order-btn" data-src="${src}" data-price="${price}" onclick="openOrderModal(this)">Order Now</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      </script>
+
+    </section>
+
+    <!-- Ads (middle) -->
+    <div style="margin:30px 0;display:flex;justify-content:center;">
+      <script type='text/javascript' src='//encasehighlight.com/0f/9c/9f/0f9c9f028a055804e42076f89bdbd302.js'></script>
+    </div>
+
+    <footer>
+      <div>© <a href="#" target="_blank">Shopno Fashion House</a> — Elevating Your Style.</div>
+      <div style="margin-top:4px;">Crafted with passion and precision for a seamless experience.</div>
+    </footer>
+
+  </div>
+
+  <!-- Modal / Order Form -->
+  <div id="modal" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div id="modalContent">
+        <h3>Place Your Order</h3>
+        <div class="modal-product-info">Product ID: <strong id="prodName">-</strong> &nbsp; | &nbsp; Price: <strong id="prodPrice">-</strong> Tk</div>
+        <div class="field"><label for="inpName">Your Full Name</label><input id="inpName" type="text" placeholder="e.g. Md. Rifat Islam"></div>
+        <div class="field"><label for="inpPhone">Mobile Number</label><input id="inpPhone" type="tel" placeholder="e.g. 01XXXXXXXXX"></div>
+        <div class="field"><label for="inpZila">District (Zila)</label><input id="inpZila" type="text" placeholder="e.g. Dhaka"></div>
+        <div class="field"><label for="inpThana">Sub-district (Thana)</label><input id="inpThana" type="text" placeholder="e.g. Savar"></div>
+        <div class="field"><label for="inpUnion">Union / Area</label><input id="inpUnion" type="text" placeholder="e.g. Ashulia"></div>
+        <div class="modal-info-text">After confirming your details, click <strong>Order Confirm</strong> to proceed to our exclusive offer page.</div>
+        <div class="modal-actions">
+          <button class="btn secondary-btn" onclick="closeModal()">Cancel</button>
+          <button class="btn order-btn" onclick="confirmOrder()">Order Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ads (bottom) -->
+  <script async="async" data-cfasync="false" src="//encasehighlight.com/151d47911fb3c3168d299edd1019f92e/invoke.js"></script>
+  <div id="container-151d47911fb3c3168d299edd1019f92e"></div>
+
+  <script>
+    const ADLINK = 'https://encasehighlight.com/vsnrrkqbrb?key=875a394a0867b7d59e2cb13e1f009402';
+    function openOrderModal(button){
+      const src = button.dataset.src;
+      const price = button.dataset.price;
+      // Extracting a simpler product name from the image URL for display
+      const productName = src.split('/').pop().replace(/\.jpg$/, '').replace(/[^a-zA-Z0-9]/g, ' ').trim();
+      document.getElementById('prodName').innerText = productName || 'Selected Product';
+      document.getElementById('prodPrice').innerText = price;
+      document.getElementById('modal').style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    }
+    function closeModal(){
+      document.getElementById('modal').style.display = 'none';
+      document.body.style.overflow = ''; // Restore scrolling
+      // Reset modal content in case success message was shown
+      const originalModalContent = `
+        <h3>Place Your Order</h3>
+        <div class="modal-product-info">Product ID: <strong id="prodName">-</strong> &nbsp; | &nbsp; Price: <strong id="prodPrice">-</strong> Tk</div>
+        <div class="field"><label for="inpName">Your Full Name</label><input id="inpName" type="text" placeholder="e.g. Md. Rifat Islam"></div>
+        <div class="field"><label for="inpPhone">Mobile Number</label><input id="inpPhone" type="tel" placeholder="e.g. 01XXXXXXXXX"></div>
+        <div class="field"><label for="inpZila">District (Zila)</label><input id="inpZila" type="text" placeholder="e.g. Dhaka"></div>
+        <div class="field"><label for="inpThana">Sub-district (Thana)</label><input id="inpThana" type="text" placeholder="e.g. Savar"></div>
+        <div class="field"><label for="inpUnion">Union / Area</label><input id="inpUnion" type="text" placeholder="e.g. Ashulia"></div>
+        <div class="modal-info-text">After confirming your details, click <strong>Order Confirm</strong> to proceed to our exclusive offer page.</div>
+        <div class="modal-actions">
+          <button class="btn secondary-btn" onclick="closeModal()">Cancel</button>
+          <button class="btn order-btn" onclick="confirmOrder()">Order Confirm</button>
+        </div>
+      `;
+      document.getElementById('modalContent').innerHTML = originalModalContent;
+    }
+    function confirmOrder(){
+      // Basic validation
+      const name = document.getElementById('inpName').value.trim();
+      const phone = document.getElementById('inpPhone').value.trim();
+      const zila = document.getElementById('inpZila').value.trim();
+      const thana = document.getElementById('inpThana').value.trim();
+      const union = document.getElementById('inpUnion').value.trim();
+
+      if(!name || !phone || !zila || !thana || !union){
+        alert('Please fill in all the required fields (Name, Mobile, District, Sub-district, Union) to place your order.');
+        return;
+      }
+      // Show success message in modal
+      const html = `
+        <div class="success">
+          <div class="success-title">Order Confirmed!</div>
+          <div class="success-message">Thank you, <strong>${name}</strong>. Your order has been successfully received. We'll contact you shortly.</div>
+          <div style="margin-top:18px;">
+            <button onclick="window.location.href='${ADLINK}'">Proceed to Offers</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalContent').innerHTML = html;
+
+      // Here you could add code to POST the order to a server. For now, just simulate success.
+      // Example of how you might collect data (though not sent anywhere in this static example)
+      const orderData = {
+          productName: document.getElementById('prodName').innerText,
+          productPrice: document.getElementById('prodPrice').innerText,
+          customerName: name,
+          customerPhone: phone,
+          customerZila: zila,
+          customerThana: thana,
+          customerUnion: union
+      };
+      console.log('Order Data:', orderData);
+    }
+
+    // close modal on backdrop click
+    document.getElementById('modal').addEventListener('click', function(e){
+      if(e.target === this) closeModal();
+    });
+  </script>
+</body>
+</html>
